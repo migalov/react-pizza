@@ -8,6 +8,7 @@ function Categories() {
       <ul>
         {categories.map((value, i) => (
           <li
+            key={i} // Только если массив статичный
             onClick={() => setActiveIndexCategory(i)}
             className={activeIndexCategory === i ? "active" : ""}
           >
