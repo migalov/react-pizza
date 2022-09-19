@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ReactPaginate from "react-paginate";
 
 import Categories from "../components/Categories";
@@ -6,8 +6,9 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
 import { Pagination } from "../components/Pagination";
+import { SearchContext } from "../App";
 
-export const Home = ({ searchValue }) => {
+export const Home = () => {
   const [items, setItems] = useState([]),
     [isLoading, setIsLoading] = useState(true),
     [categoryId, setCategoryId] = useState(0),
@@ -16,6 +17,7 @@ export const Home = ({ searchValue }) => {
       name: "популярности",
       sortProperty: "rating",
     }),
+    { searchValue } = useContext(SearchContext),
     pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />),
     skeletons = [...new Array(6)].map((key) => <PizzaBlockSkeleton />);
 
