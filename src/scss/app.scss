@@ -1,5 +1,6 @@
 //@import './fonts.scss';
 @import './variables.scss';
+@import './mixins/media-query.scss';
 @import './libs/normalize.scss';
 
 @import './components/all.scss';
@@ -25,9 +26,17 @@ body {
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;   
+    grid-gap: 35px 40px;
+    @include md {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include lg {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @include xl {
+        grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   &__top {
