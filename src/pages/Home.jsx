@@ -5,6 +5,7 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
 
+
 export const Home = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,7 @@ export const Home = () => {
         setItems(arr);
         setIsLoading(false);
       });
+      window.scrollTo(0, 0);
   }, []);
 
   return (

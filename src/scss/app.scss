@@ -10,12 +10,16 @@ body {
 }
 
 .wrapper {
-  width: calc(100vw - 100px);
+  width: calc(100vw - 30px);
   height: 100%;
   background-color: #fff;
-  margin: 50px auto;
+  margin: 30px auto;
   border-radius: 10px;
   max-width: 1400px;
+  @include sm {
+    width: calc(100vw - 100px);
+    margin: 50px auto;
+  }
 }
 
 .content {
@@ -43,6 +47,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: column-reverse;
+    gap: 24px;
+
+    @include lg {
+      flex-direction: row;
+    }
   }
 }
 

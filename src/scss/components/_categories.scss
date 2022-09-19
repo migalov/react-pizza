@@ -1,8 +1,22 @@
 @import '../variables.scss';
 
 .categories {
+
+  width: 100%;
+  overflow: scroll;
+  @include lg {
+    width: calc(100% - 280px);
+    overflow: auto;
+  }
   ul {
     display: flex;
+    width: 785px;
+    margin: 0 auto;
+
+    @include lg {
+      margin: inherit;
+    }
+
 
     li {
       background-color: #f9f9f9;
