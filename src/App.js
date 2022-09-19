@@ -5,11 +5,15 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import NotFound from "./components/NotFoundBlock";
 import { Routes, Route } from 'react-router-dom';
+import { useState } from "react";
 
 function App() {
+
+  const [searchValue, setSearchValue] = useState('');
+
   return (
     <div className="wrapper">
-      <Header />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       <div className="content">
         <div className="container">
           <Routes>
