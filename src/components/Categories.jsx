@@ -1,18 +1,17 @@
 import { useState } from "react";
 
-function Categories() {
-  const [activeIndexCategory, setActiveIndexCategory] = useState(0);
+function Categories({ value, onChangeCategory }) {
   const categories = ["Все", "Мясные", "Веганские", "Гриль", "Острые", "Закрытые"];
   return (
     <div className="categories">
       <ul>
-        {categories.map((value, i) => (
+        {categories.map((categoryName, i) => (
           <li
             key={i} // Только если массив статичный
-            onClick={() => setActiveIndexCategory(i)}
-            className={activeIndexCategory === i ? "active" : ""}
+            onClick={() => onChangeCategory(i)}
+            className={value === i ? "active" : ""}
           >
-            {value}
+            {categoryName}
           </li>
         ))}
       </ul>
