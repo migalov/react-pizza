@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import ReactPaginate from "react-paginate";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -26,7 +25,7 @@ export const Home = () => {
     const order = sortType.sortProperty.includes("-") ? "asc" : "desc",
       sortBy = sortType.sortProperty.replace("-", ""),
       category = categoryId > 0 ? `category=${categoryId}` : "",
-      search = searchValue ? `&search=${searchValue}` : ""
+      search = searchValue ? `&search=${searchValue}` : "";
     fetch(
       `https://63278ddb9a053ff9aaa74737.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
     )
@@ -49,7 +48,7 @@ export const Home = () => {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-      <Pagination onChangePage={ number => setCurrentPage(number)} />
+      <Pagination onChangePage={(number) => setCurrentPage(number)} />
     </>
   );
 };
