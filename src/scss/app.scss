@@ -1,9 +1,9 @@
 //@import './fonts.scss';
-@import './variables.scss';
-@import './mixins/media-query.scss';
-@import './libs/normalize.scss';
+@import "./variables.scss";
+@import "./mixins/media-query.scss";
+@import "./libs/normalize.scss";
 
-@import './components/all.scss';
+@import "./components/all.scss";
 
 body {
   background-color: $background;
@@ -30,16 +30,16 @@ body {
   }
 
   &__items {
-    display: grid;   
+    display: grid;
     grid-gap: 35px 40px;
     @include md {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
     @include lg {
-        grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
     @include xl {
-        grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -293,17 +293,18 @@ body {
   }
 
   &--empty {
-    margin: 0 auto;
-    width: 560px;
+    margin: 80px auto;
+    width: 620px;
     text-align: center;
 
     h2 {
-      font-size: 32px;
+      font-size: 36px;
+      font-weight: 700;
       margin-bottom: 10px;
     }
 
     p {
-      font-size: 18px;
+      font-size: 20px;
       line-height: 145.4%;
       letter-spacing: 0.01em;
       color: #777777;
