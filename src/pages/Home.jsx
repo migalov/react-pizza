@@ -10,8 +10,9 @@ import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
 import { Pagination } from "../components/Pagination";
 import { SearchContext } from "../App";
-import { fetchPizzas } from "../redux/slices/pizzaSlice"
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice"
 import {
+  selectFilter,
   setCategoryId,
   setCurrentPage,
   setFilters,
@@ -24,10 +25,8 @@ export const Home = () => {
     isMounted = useRef(false),
     dispatch = useDispatch(),
     navigate = useNavigate(),
-
-    { searchValue } = useContext(SearchContext),
-    { items, status } = useSelector((state) => state.pizza),
-    { categoryId, sort, currentPage } = useSelector((state) => state.filter),
+    { items, status } = useSelector(selectPizzaData),
+    { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter),
 
 
     pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />),
