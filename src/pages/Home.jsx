@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+
 import qs from "qs";
 
 import Categories from "../components/Categories";
@@ -10,6 +10,7 @@ import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
 import { Pagination } from "../components/Pagination";
 import { SearchContext } from "../App";
+import { fetchPizzas } from "../redux/slices/pizzaSlice"
 import {
   setCategoryId,
   setCurrentPage,
@@ -23,33 +24,38 @@ export const Home = () => {
     isMounted = useRef(false),
     dispatch = useDispatch(),
     navigate = useNavigate(),
-    [items, setItems] = useState([]),
-    [isLoading, setIsLoading] = useState(true),
+
     { searchValue } = useContext(SearchContext),
+    { items, status } = useSelector((state) => state.pizza),
+    { categoryId, sort, currentPage } = useSelector((state) => state.filter),
+
+
     pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />),
     skeletons = [...new Array(6)].map(() => <PizzaBlockSkeleton />),
-    { categoryId, sort, currentPage } = useSelector((state) => state.filter),
+   
     onChangeCategory = (id) => {
       dispatch(setCategoryId(id));
     },
     onChangePage = (number) => {
       dispatch(setCurrentPage(number));
     },
-    fetchPizzas = () => {
-      setIsLoading(true);
+    getPizzas = async () => {
+
       const order = sort.sortProperty.includes("-") ? "asc" : "desc",
         sortBy = sort.sortProperty.replace("-", ""),
         category = categoryId > 0 ? `category=${categoryId}` : "",
         search = searchValue ? `&search=${searchValue}` : "";
 
-      axios
-        .get(
-          `https://63278ddb9a053ff9aaa74737.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-        )
-        .then((response) => {
-          setItems(response.data);
-          setIsLoading(false);
-        });
+        dispatch(fetchPizzas({
+          order,
+          sortBy,
+          category,
+          search,
+          currentPage
+        }))      
+
+      window.scrollTo(0, 0);
+
     };
 
   //Если был 1-ый рендер, то проверяем url-параметры и сохраняем в Redux
@@ -86,7 +92,7 @@ export const Home = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
@@ -99,7 +105,15 @@ export const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      {
+        status === "error" ? <div className="content__error-info">
+          <h2>
+          Произошла ошибка<icon>😕</icon>
+        </h2>
+        <p>Вероятно сайт упал. За вопросами обратитесь к администратору.</p>
+        </div> : <div className="content__items">{status === "loading" ? skeletons : pizzas}</div>
+      }
+      
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </>
   );
