@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import qs from "qs";
@@ -29,7 +29,7 @@ export const Home = () => {
     { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter),
 
 
-    pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />),
+    pizzas = items.map((obj) => <Link to={ `/pizza/${obj.id}` }><PizzaBlock {...obj} /></Link>),
     skeletons = [...new Array(6)].map(() => <PizzaBlockSkeleton />),
    
     onChangeCategory = (id) => {
