@@ -9,7 +9,6 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
 import { Pagination } from "../components/Pagination";
-import { SearchContext } from "../App";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice"
 import {
   selectFilter,
@@ -20,7 +19,7 @@ import {
 
 import { sortList } from "../components/Sort";
 
-export const Home = () => {
+const Home: React.FC = () => {
   const isSearch = useRef(false),
     isMounted = useRef(false),
     dispatch = useDispatch(),
@@ -29,14 +28,14 @@ export const Home = () => {
     { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter),
 
 
-    pizzas = items.map((obj) => <Link to={ `/pizza/${obj.id}` }><PizzaBlock {...obj} /></Link>),
+    pizzas = items.map((obj: any) => <Link to={ `/pizza/${obj.id}` }><PizzaBlock {...obj} /></Link>),
     skeletons = [...new Array(6)].map(() => <PizzaBlockSkeleton />),
    
-    onChangeCategory = (id) => {
-      dispatch(setCategoryId(id));
+    onChangeCategory = (index: string) => {
+      dispatch(setCategoryId(index));
     },
-    onChangePage = (number) => {
-      dispatch(setCurrentPage(number));
+    onChangePage = (page: number) => {
+      dispatch(setCurrentPage(page));
     },
     getPizzas = async () => {
 
@@ -45,7 +44,9 @@ export const Home = () => {
         category = categoryId > 0 ? `category=${categoryId}` : "",
         search = searchValue ? `&search=${searchValue}` : "";
 
-        dispatch(fetchPizzas({
+        dispatch(
+          // @ts-ignore
+          fetchPizzas({
           order,
           sortBy,
           category,
@@ -106,9 +107,7 @@ export const Home = () => {
       <h2 className="content__title">Все пиццы</h2>
       {
         status === "error" ? <div className="content__error-info">
-          <h2>
-          Произошла ошибка<icon>😕</icon>
-        </h2>
+          <h2>Произошла ошибка <span>😕</span></h2>
         <p>Вероятно сайт упал. За вопросами обратитесь к администратору.</p>
         </div> : <div className="content__items">{status === "loading" ? skeletons : pizzas}</div>
       }
