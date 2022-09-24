@@ -1,14 +1,14 @@
-import { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import debounce from "lodash.debounce";
 import styles from "./Search.module.scss";
 import { useDispatch } from "react-redux";
 import { setSearchValue } from "../../redux/slices/filterSlice";
 
 const Search: React.FC = () => {
-  const [ value, setValue ] = useState(""),
+  const [value, setValue] = useState(""),
     dispatch = useDispatch(),
     inputRef = useRef<HTMLInputElement>(null),
-    onClickClear = () => {
+    onClickClear = (event: React.MouseEvent<HTMLSpanElement>) => {
       dispatch(setSearchValue(""));
       setValue("");
       inputRef.current?.focus();
@@ -19,7 +19,7 @@ const Search: React.FC = () => {
       }, 700),
       []
     ),
-    onChangeInput = (event: any) => {
+    onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
       setValue(event.target.value);
       updateSearchValue(event.target.value);
     };
@@ -68,9 +68,9 @@ const Search: React.FC = () => {
         value={value}
       />
       {value && (
-        <div onClick={onClickClear} className={styles.clearIcon}>
+        <span onClick={onClickClear} className={styles.clearIcon}>
           ❌
-        </div>
+        </span>
       )}
     </div>
   );

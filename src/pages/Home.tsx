@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -8,8 +8,8 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
-import { Pagination } from "../components/Pagination";
-import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice"
+import Pagination from "../components/Pagination";
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 import {
   selectFilter,
   setCategoryId,
@@ -26,36 +26,36 @@ const Home: React.FC = () => {
     navigate = useNavigate(),
     { items, status } = useSelector(selectPizzaData),
     { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter),
-
-
-    pizzas = items.map((obj: any) => <Link to={ `/pizza/${obj.id}` }><PizzaBlock {...obj} /></Link>),
+    pizzas = items.map((obj: any) => (
+      <Link to={`/pizza/${obj.id}`}>
+        <PizzaBlock {...obj} />
+      </Link>
+    )),
     skeletons = [...new Array(6)].map(() => <PizzaBlockSkeleton />),
-   
-    onChangeCategory = (index: string) => {
+    onChangeCategory = (index: number) => {
       dispatch(setCategoryId(index));
     },
     onChangePage = (page: number) => {
       dispatch(setCurrentPage(page));
     },
     getPizzas = async () => {
-
       const order = sort.sortProperty.includes("-") ? "asc" : "desc",
         sortBy = sort.sortProperty.replace("-", ""),
         category = categoryId > 0 ? `category=${categoryId}` : "",
         search = searchValue ? `&search=${searchValue}` : "";
 
-        dispatch(
-          // @ts-ignore
-          fetchPizzas({
+      dispatch(
+        // @ts-ignore
+        fetchPizzas({
           order,
           sortBy,
           category,
           search,
-          currentPage
-        }))      
+          currentPage,
+        })
+      );
 
       window.scrollTo(0, 0);
-
     };
 
   //Если был 1-ый рендер, то проверяем url-параметры и сохраняем в Redux
@@ -105,13 +105,19 @@ const Home: React.FC = () => {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      {
-        status === "error" ? <div className="content__error-info">
-          <h2>Произошла ошибка <span>😕</span></h2>
-        <p>Вероятно сайт упал. За вопросами обратитесь к администратору.</p>
-        </div> : <div className="content__items">{status === "loading" ? skeletons : pizzas}</div>
-      }
-      
+      {status === "error" ? (
+        <div className="content__error-info">
+          <h2>
+            Произошла ошибка <span>😕</span>
+          </h2>
+          <p>Вероятно сайт упал. За вопросами обратитесь к администратору.</p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading" ? skeletons : pizzas}
+        </div>
+      )}
+
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </>
   );

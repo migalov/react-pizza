@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort, selectSort } from "../redux/slices/filterSlice";
 
 type SortItem = {
-  name: string,
-  sortProperty: string
+  name: string;
+  sortProperty: string;
+};
+
+type PopupClick = MouseEvent & {
+  path: Node[];
 };
 
 export const sortList: SortItem[] = [
@@ -20,22 +24,25 @@ function Sort() {
   const dispatch = useDispatch(),
     sort = useSelector(selectSort),
     sortRef = useRef<HTMLDivElement>(null),
-    [open, setOpen] = useState(false),
+    [open, setOpen] = useState<boolean>(false),
     onClickListItem = (obj: SortItem) => {
       dispatch(setSort(obj));
       setOpen(false);
     };
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick;
+
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setOpen(false);
       }
-    }
-    document.body.addEventListener('click', handleClickOutside);
-    return () => document.body.removeEventListener('click', handleClickOutside)
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside);
   }, []);
-  
+
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -61,7 +68,9 @@ function Sort() {
               <li
                 key={index}
                 onClick={() => onClickListItem(obj)}
-                className={sort.sortProperty === obj.sortProperty ? "active" : ""}
+                className={
+                  sort.sortProperty === obj.sortProperty ? "active" : ""
+                }
               >
                 {obj.name}
               </li>
