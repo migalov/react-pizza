@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/Header";
+import { Header } from "../components/Header";
 import { Outlet } from "react-router-dom";
 
 const MainLayout: React.FC = () => {
@@ -8,7 +8,7 @@ const MainLayout: React.FC = () => {
       <Header />
       <div className="content">
         <div className="container">
-            <Outlet />
+          <Outlet />
         </div>
       </div>
     </div>

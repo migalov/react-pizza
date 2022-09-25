@@ -4,12 +4,7 @@ import { useSelector } from "react-redux";
 
 import qs from "qs";
 
-import Categories from "../components/Categories";
-import Sort from "../components/Sort";
-import PizzaBlock from "../components/PizzaBlock";
-import PizzaBlockSkeleton from "../components/PizzaBlock/Skeleton";
-import Pagination from "../components/Pagination";
-
+import { Categories, Sort, PizzaBlock, Skeleton } from "../components";
 
 import { sortList } from "../components/Sort";
 import { useAppDispatch } from "../redux/store";
@@ -17,6 +12,7 @@ import { selectFilter } from "../redux/filter/selectors";
 import { selectPizzaData } from "../redux/pizza/selectors";
 import { setCategoryId, setCurrentPage } from "../redux/filter/slice";
 import { fetchPizzas } from "../redux/pizza/asyncActions";
+import Pagination from "../components/Pagination";
 
 const Home: React.FC = () => {
   const isSearch = useRef(false),
@@ -26,7 +22,7 @@ const Home: React.FC = () => {
     { items, status } = useSelector(selectPizzaData),
     { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter),
     pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />),
-    skeletons = [...new Array(4)].map(() => <PizzaBlockSkeleton />),
+    skeletons = [...new Array(4)].map(() => <Skeleton />),
     onChangeCategory = useCallback((index: number) => {
       dispatch(setCategoryId(index));
     }, []),
